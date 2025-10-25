@@ -1,7 +1,0 @@
-[2025-10-23T03:45:45.130561Z] Start pipeline for video_id=88BbTpbWVpY
-[2025-10-23T03:45:45.130810Z] env: openai_key_present=True, cookies_present=True
-[2025-10-23T03:45:45.131465Z] Caption list error: type object 'YouTubeTranscriptApi' has no attribute 'list_transcripts'
-[2025-10-23T03:45:45.131656Z] No captions available; trying Whisper fallback
-[2025-10-23T03:45:58.751837Z] Downloaded audio: artifacts/10/audio.mp4
-[2025-10-23T03:46:07.756207Z] Whisper returned empty transcript
-[2025-10-23T03:46:07.756767Z] Falling back to stub transcript

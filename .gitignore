@@ -21,6 +21,9 @@ __pycache__/
 .venv/
 *.egg-info/
 
+# Artifacts
+backend/artifacts/
+
 # IDE
 .vscode/
 .idea/

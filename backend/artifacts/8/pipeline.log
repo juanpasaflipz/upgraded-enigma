@@ -1,5 +1,0 @@
-[2025-10-22T15:40:55.823874Z] Start pipeline for video_id=88BbTpbWVpY
-[2025-10-22T15:40:55.824042Z] Caption fetch error: type object 'YouTubeTranscriptApi' has no attribute 'get_transcript'
-[2025-10-22T15:40:55.824209Z] No captions available; trying Whisper fallback
-[2025-10-22T15:41:03.532646Z] Whisper/download failed: [0;31mERROR:[0m unable to download video data: HTTP Error 403: Forbidden
-[2025-10-22T15:41:03.535405Z] Falling back to stub transcript

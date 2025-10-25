@@ -1,4 +1,0 @@
-Transcript for video 88BbTpbWVpY.
-This is a mocked transcript generated for local testing.
-The video discusses building an MVP, focusing on goals, features, and a landing page.
-Key points: simplicity, Tailwind styling, and clear CTAs.
