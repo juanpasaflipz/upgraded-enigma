@@ -1,0 +1,38 @@
+{
+  "title": "Yadaphone - Affordable International Calling",
+  "description": "Yadaphone lets you make and receive cheap international calls directly from your browser, using voice over IP technology. Perfect for travelers, expats, and businesses needing cost-effective communication.",
+  "features": [
+    "Pay-as-you-go model for individuals and businesses",
+    "No subscription fees - just purchase credits",
+    "Make calls to any mobile or landline number for cents",
+    "User-friendly web dialer interface",
+    "Supports both individual and enterprise clients"
+  ],
+  "cta": {
+    "label": "Get Started Now",
+    "href": "/signup"
+  },
+  "branding": {
+    "primary": "#4CAF50",
+    "neutral": "#FFFFFF"
+  },
+  "sections": [
+    {
+      "title": "Hero",
+      "content": "Join thousands of users making affordable international calls with Yadaphone."
+    },
+    {
+      "title": "Features",
+      "content": "Discover how Yadaphone stands out with its unique pay-as-you-go model and user-friendly interface."
+    },
+    {
+      "title": "How It Works",
+      "content": "Simply purchase credits and start making calls instantly without any subscriptions."
+    },
+    {
+      "title": "Pricing",
+      "content": "Flexible pricing based on credits purchased, ensuring you only pay for what you use."
+    }
+  ],
+  "generated_at": "2023-10-01T00:00:00Z"
+}

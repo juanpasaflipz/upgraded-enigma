@@ -1,0 +1,12 @@
+{
+  "title": "Sample MVP Landing",
+  "description": "Default spec used for initial copy and local rendering.",
+  "features": [
+    "Paste a YouTube URL",
+    "Analyze transcript to spec",
+    "Generate Next.js prototype"
+  ],
+  "cta": { "label": "Try Now", "href": "/" },
+  "branding": { "primary": "#22c55e", "neutral": "#18181b" },
+  "sections": []
+}

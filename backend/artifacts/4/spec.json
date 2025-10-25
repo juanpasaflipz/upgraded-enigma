@@ -1,0 +1,36 @@
+{
+  "title": "Your App Name",
+  "description": "A simple and effective solution to solve your problem.",
+  "features": [
+    "Feature 1: Easy to use interface",
+    "Feature 2: Fast and reliable performance",
+    "Feature 3: Seamless integration with existing tools"
+  ],
+  "cta": {
+    "label": "Get Started Now",
+    "href": "/signup"
+  },
+  "branding": {
+    "primary": "#1D4ED8",
+    "neutral": "#F3F4F6"
+  },
+  "sections": [
+    {
+      "name": "Hero",
+      "content": "Welcome to Your App Name - Simplifying your life."
+    },
+    {
+      "name": "Features",
+      "content": "Discover the amazing features that make us stand out."
+    },
+    {
+      "name": "How It Works",
+      "content": "Learn how to get started in just a few easy steps."
+    },
+    {
+      "name": "Pricing",
+      "content": "Choose a plan that fits your needs."
+    }
+  ],
+  "generated_at": "2023-10-01T00:00:00Z"
+}

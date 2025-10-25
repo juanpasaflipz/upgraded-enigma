@@ -1,0 +1,76 @@
+{
+  "title": "Your App Name",
+  "description": "A simple and effective solution to meet your needs.",
+  "features": [
+    "User-friendly interface",
+    "Fast performance",
+    "Responsive design",
+    "Secure data handling",
+    "Customizable settings"
+  ],
+  "cta": {
+    "label": "Get Started",
+    "href": "/signup"
+  },
+  "branding": {
+    "primary": "#1D4ED8",
+    "neutral": "#9CA3AF"
+  },
+  "sections": [
+    {
+      "type": "hero",
+      "content": {
+        "headline": "Transform Your Experience",
+        "subheadline": "Join us and simplify your tasks with our innovative app."
+      }
+    },
+    {
+      "type": "features",
+      "content": {
+        "headline": "Features",
+        "items": [
+          "Feature 1: Easy to use",
+          "Feature 2: Fast and reliable",
+          "Feature 3: Accessible anywhere"
+        ]
+      }
+    },
+    {
+      "type": "how-it-works",
+      "content": {
+        "headline": "How It Works",
+        "steps": [
+          "Step 1: Sign up for an account",
+          "Step 2: Customize your settings",
+          "Step 3: Start using the app"
+        ]
+      }
+    },
+    {
+      "type": "pricing",
+      "content": {
+        "headline": "Pricing Plans",
+        "plans": [
+          {
+            "name": "Basic",
+            "price": "$10/month",
+            "features": [
+              "Feature A",
+              "Feature B"
+            ]
+          },
+          {
+            "name": "Pro",
+            "price": "$20/month",
+            "features": [
+              "Feature A",
+              "Feature B",
+              "Feature C"
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "generated_at": "2023-10-01T00:00:00Z"
+}

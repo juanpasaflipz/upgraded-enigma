@@ -1,0 +1,36 @@
+{
+  "title": "Your App Name",
+  "description": "A simple and effective solution to meet your needs.",
+  "features": [
+    "Feature 1: Easy to use interface",
+    "Feature 2: Fast performance",
+    "Feature 3: Customizable settings"
+  ],
+  "cta": {
+    "label": "Get Started",
+    "href": "/signup"
+  },
+  "branding": {
+    "primary": "#1D4ED8",
+    "neutral": "#F3F4F6"
+  },
+  "sections": [
+    {
+      "type": "hero",
+      "content": "Welcome to Your App! Simplifying your life one step at a time."
+    },
+    {
+      "type": "features",
+      "content": "Explore our key features that make us stand out."
+    },
+    {
+      "type": "how-it-works",
+      "content": "Learn how to get started with our easy onboarding process."
+    },
+    {
+      "type": "pricing",
+      "content": "Choose a plan that fits your needs."
+    }
+  ],
+  "generated_at": "2023-10-01T00:00:00Z"
+}

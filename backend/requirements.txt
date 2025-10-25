@@ -1,0 +1,17 @@
+fastapi
+uvicorn[standard]
+sqlmodel
+pydantic
+python-multipart
+aiofiles
+python-dotenv
+
+# youtube + ai
+youtube-transcript-api
+yt-dlp
+openai>=1.42.0
+
+# tests
+pytest
+httpx
+anyio

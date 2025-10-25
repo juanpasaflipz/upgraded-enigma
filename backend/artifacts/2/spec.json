@@ -1,0 +1,53 @@
+{
+  "title": "Generated MVP",
+  "description": "An auto-generated landing page prototype based on a YouTube video.",
+  "features": [
+    "Hero section with headline and CTA",
+    "Features grid with 3-4 items",
+    "How it works steps",
+    "Pricing section with tiers",
+    "Footer with minimal links"
+  ],
+  "cta": {
+    "label": "Get Started",
+    "href": "/"
+  },
+  "branding": {
+    "primary": "#22c55e",
+    "neutral": "#18181b"
+  },
+  "sections": [
+    {
+      "id": "hero",
+      "headline": "Generated MVP",
+      "subtext": "Built from your video"
+    },
+    {
+      "id": "features",
+      "items": [
+        "Hero section with headline and CTA",
+        "Features grid with 3-4 items",
+        "How it works steps",
+        "Pricing section with tiers",
+        "Footer with minimal links"
+      ]
+    },
+    {
+      "id": "how",
+      "steps": [
+        "Paste URL",
+        "Analyze",
+        "Generate Prototype"
+      ]
+    },
+    {
+      "id": "pricing",
+      "tiers": [
+        "Free",
+        "Pro",
+        "Team"
+      ]
+    }
+  ],
+  "generated_at": "2025-10-21T15:20:11.689523Z"
+}
