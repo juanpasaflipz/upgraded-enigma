@@ -21,6 +21,8 @@ from .services.pipeline import (
     ensure_dir,
     generate_prototype_zip,
 )
+from .services.viability import check_viability
+from .routes import stripe as stripe_routes
 
 
 ARTIFACTS_DIR = Path(os.getenv("ARTIFACTS_DIR", "artifacts"))
@@ -30,9 +32,11 @@ ensure_dir(ARTIFACTS_DIR)
 
 app = FastAPI(title="YouTube → MVP API")
 
+allowed = os.getenv("ALLOWED_ORIGINS", "*")
+origins = [o.strip() for o in allowed.split(",") if o.strip()] if allowed != "*" else ["*"]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -43,6 +47,7 @@ app.add_middleware(
 def on_startup() -> None:
     init_db()
     app.mount("/downloads", StaticFiles(directory=str(ARTIFACTS_DIR)), name="downloads")
+    app.include_router(stripe_routes.router)
 
 
 def project_artifacts_urls(project: Project, session: Session) -> List[ArtifactRead]:
@@ -84,6 +89,28 @@ def run_pipeline(project_id: int) -> None:
         transcript_path = proj_dir / "transcript.txt"
         transcript_path.write_text(transcript, encoding="utf-8")
         project.transcript_path = str(transcript_path)
+        # 1.5) Viability check and persist
+        viab = check_viability(project.title or "", transcript)
+        project.mvp_viability = viab.get("mvp_viability")
+        project.viability_score = viab.get("viability_score")
+        project.viability_reason = viab.get("viability_reason")
+        session.add(project)
+        session.commit()
+
+        # Thresholds & gating: proceed when mvp-ready, or idea-only with score >= 0.5
+        proceed = False
+        if project.mvp_viability == "mvp-ready":
+            proceed = True
+        elif project.mvp_viability == "idea-only" and (project.viability_score or 0) >= 0.5:
+            proceed = True
+
+        if not proceed:
+            # Skip spec/prototype generation by default when below threshold
+            project.status = "complete"
+            project.updated_at = datetime.utcnow()
+            session.add(project)
+            session.commit()
+            return
 
         # 2) Analyze → spec.json (stub deterministic)
         spec = analyze_to_spec(transcript, project.title or "Generated MVP")
@@ -112,8 +139,16 @@ def create_project(payload: ProjectCreate, background: BackgroundTasks, session:
     background.add_task(run_pipeline, project.id)
 
     return ProjectRead(
-        id=project.id, youtube_url=project.youtube_url, title=project.title, status=project.status,
-        artifacts=project_artifacts_urls(project, session), created_at=project.created_at, updated_at=project.updated_at
+        id=project.id,
+        youtube_url=project.youtube_url,
+        title=project.title,
+        status=project.status,
+        mvp_viability=project.mvp_viability,
+        viability_score=project.viability_score,
+        viability_reason=project.viability_reason,
+        artifacts=project_artifacts_urls(project, session),
+        created_at=project.created_at,
+        updated_at=project.updated_at,
     )
 
 
@@ -124,8 +159,16 @@ def list_projects(session: Session = Depends(get_session)):
     for p in projects:
         out.append(
             ProjectRead(
-                id=p.id, youtube_url=p.youtube_url, title=p.title, status=p.status,
-                artifacts=project_artifacts_urls(p, session), created_at=p.created_at, updated_at=p.updated_at
+                id=p.id,
+                youtube_url=p.youtube_url,
+                title=p.title,
+                status=p.status,
+                mvp_viability=p.mvp_viability,
+                viability_score=p.viability_score,
+                viability_reason=p.viability_reason,
+                artifacts=project_artifacts_urls(p, session),
+                created_at=p.created_at,
+                updated_at=p.updated_at,
             )
         )
     return out
@@ -137,8 +180,16 @@ def get_project(project_id: int, session: Session = Depends(get_session)):
     if not p:
         raise HTTPException(status_code=404, detail="Project not found")
     return ProjectRead(
-        id=p.id, youtube_url=p.youtube_url, title=p.title, status=p.status,
-        artifacts=project_artifacts_urls(p, session), created_at=p.created_at, updated_at=p.updated_at
+        id=p.id,
+        youtube_url=p.youtube_url,
+        title=p.title,
+        status=p.status,
+        mvp_viability=p.mvp_viability,
+        viability_score=p.viability_score,
+        viability_reason=p.viability_reason,
+        artifacts=project_artifacts_urls(p, session),
+        created_at=p.created_at,
+        updated_at=p.updated_at,
     )
 
 
@@ -186,3 +237,10 @@ def mark_complete(project_id: int, session: Session = Depends(get_session)):
     session.add(p)
     session.commit()
     return {"status": "ok"}
+
+
+@app.post("/api/viability-check")
+def viability_check(payload: dict):
+    title = payload.get("title", "") if isinstance(payload, dict) else ""
+    transcript = payload.get("transcript", "") if isinstance(payload, dict) else ""
+    return check_viability(title, transcript)

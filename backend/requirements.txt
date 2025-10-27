@@ -10,6 +10,7 @@ python-dotenv
 youtube-transcript-api
 yt-dlp
 openai>=1.42.0
+stripe
 
 # tests
 pytest

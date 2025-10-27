@@ -19,6 +19,10 @@ class Project(SQLModel, table=True):
     transcript_path: Optional[str] = None
     spec_path: Optional[str] = None
     prototype_zip_path: Optional[str] = None
+    # Viability assessment fields
+    mvp_viability: Optional[str] = Field(default=None)  # "mvp-ready" | "idea-only" | "not-a-project"
+    viability_score: Optional[float] = Field(default=None)
+    viability_reason: Optional[str] = Field(default=None)
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(default_factory=datetime.utcnow)
 
@@ -29,4 +33,3 @@ class Artifact(SQLModel, table=True):
     type: str  # e.g., caption, transcript, spec, prototype_zip, other
     path: str
     created_at: datetime = Field(default_factory=datetime.utcnow)
-

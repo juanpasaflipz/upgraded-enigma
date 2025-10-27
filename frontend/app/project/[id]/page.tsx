@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { ViabilityBadge } from '@/components/ViabilityBadge'
 
 async function fetchProject(id: string) {
   const base = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000'
@@ -24,6 +25,13 @@ export default async function ProjectPage({ params }: { params: { id: string } }
           <div className="rounded-lg border border-zinc-800 p-4">
             <h2 className="font-semibold mb-2">Status</h2>
             <span className="px-2 py-1 rounded bg-zinc-800 text-zinc-200 text-sm">{project.status}</span>
+            <div className="mt-3">
+              <h3 className="text-sm text-zinc-400 mb-1">Viability</h3>
+              <ViabilityBadge label={project.mvp_viability} reason={project.viability_reason} />
+              {typeof project.viability_score === 'number' && (
+                <span className="ml-2 text-xs text-zinc-400">score: {project.viability_score.toFixed(2)}</span>
+              )}
+            </div>
           </div>
           <div className="rounded-lg border border-zinc-800 p-4">
             <h2 className="font-semibold mb-2">Artifacts</h2>
@@ -45,4 +53,3 @@ export default async function ProjectPage({ params }: { params: { id: string } }
     </main>
   )
 }
-

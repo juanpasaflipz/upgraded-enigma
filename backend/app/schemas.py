@@ -24,10 +24,12 @@ class ProjectRead(BaseModel):
     youtube_url: str
     title: Optional[str]
     status: str
+    mvp_viability: Optional[str] = None
+    viability_score: Optional[float] = None
+    viability_reason: Optional[str] = None
     artifacts: List[ArtifactRead] = []
     created_at: datetime
     updated_at: datetime
 
     class Config:
         from_attributes = True
-
