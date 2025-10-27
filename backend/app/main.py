@@ -23,6 +23,7 @@ from .services.pipeline import (
 )
 from .services.viability import check_viability
 from .routes import stripe as stripe_routes
+import os
 
 
 ARTIFACTS_DIR = Path(os.getenv("ARTIFACTS_DIR", "artifacts"))
@@ -54,8 +55,12 @@ def project_artifacts_urls(project: Project, session: Session) -> List[ArtifactR
     results = session.exec(select(Artifact).where(Artifact.project_id == project.id)).all()
     items: List[ArtifactRead] = []
     for a in results:
-        rel = Path(a.path).relative_to(ARTIFACTS_DIR)
-        url = f"{BACKEND_BASE_URL}/downloads/{rel.as_posix()}"
+        # Allow absolute URLs (e.g., S3) in Artifact.path
+        if isinstance(a.path, str) and a.path.startswith(("http://", "https://")):
+            url = a.path
+        else:
+            rel = Path(a.path).relative_to(ARTIFACTS_DIR)
+            url = f"{BACKEND_BASE_URL}/downloads/{rel.as_posix()}"
         items.append(
             ArtifactRead(id=a.id, type=a.type, url=url, created_at=a.created_at)  # type: ignore[arg-type]
         )
@@ -63,8 +68,11 @@ def project_artifacts_urls(project: Project, session: Session) -> List[ArtifactR
     implicit = [("transcript", project.transcript_path), ("spec", project.spec_path), ("prototype_zip", project.prototype_zip_path)]
     for t, p in implicit:
         if p:
-            rel = Path(p).relative_to(ARTIFACTS_DIR)
-            url = f"{BACKEND_BASE_URL}/downloads/{rel.as_posix()}"
+            if isinstance(p, str) and p.startswith(("http://", "https://")):
+                url = p
+            else:
+                rel = Path(p).relative_to(ARTIFACTS_DIR)
+                url = f"{BACKEND_BASE_URL}/downloads/{rel.as_posix()}"
             items.append(ArtifactRead(id=0, type=t, url=url, created_at=project.updated_at))
     return items
 
@@ -121,6 +129,32 @@ def run_pipeline(project_id: int) -> None:
         # 3) Generate prototype zip
         zip_path = generate_prototype_zip(project.id, spec, ARTIFACTS_DIR)
         project.prototype_zip_path = str(zip_path)
+
+        # Optional: S3 upload copies for artifacts (in addition to local)
+        if os.getenv("STORAGE_BACKEND", "disk").lower() == "s3":
+            try:
+                from .routes import stripe as _noop  # keep relative import style consistent
+                from .storage.s3 import S3Storage  # type: ignore
+                s3 = S3Storage()
+                # Upload with keys per project
+                up = []
+                with open(transcript_path, "rb") as f:
+                    url_t = s3.save_bytes(f"{project.id}/transcript.txt", f.read(), "text/plain")
+                    up.append(("transcript", url_t))
+                with open(spec_path, "rb") as f:
+                    url_s = s3.save_bytes(f"{project.id}/spec.json", f.read(), "application/json")
+                    up.append(("spec", url_s))
+                with open(zip_path, "rb") as f:
+                    url_z = s3.save_bytes(f"{project.id}/prototype.zip", f.read(), "application/zip")
+                    up.append(("prototype_zip", url_z))
+                # Record uploaded URLs as artifacts
+                for t, url in up:
+                    a = Artifact(project_id=project.id, type=t, path=url)
+                    session.add(a)
+                session.commit()
+            except Exception:
+                # best-effort; ignore failures
+                pass
 
         project.status = "complete"
         project.updated_at = datetime.utcnow()

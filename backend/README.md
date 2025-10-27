@@ -31,6 +31,9 @@ See `.env.example` for a complete list. Key vars:
 - `ALLOWED_ORIGINS` (comma-separated origins for CORS; e.g. https://yourapp.vercel.app)
 - `OPENAI_API_KEY`, `OPENAI_MODEL_GPT` (LLM viability)
 - `STRIPE_SECRET_KEY`, `STRIPE_PRICE_FREE`, `STRIPE_PRICE_PRO`, `STRIPE_PRICE_STUDIO`, `FRONTEND_URL`
+- Storage:
+  - `STORAGE_BACKEND` (disk|s3)
+  - If `s3`: `AWS_REGION`, `S3_BUCKET`, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`
 
 If unset, viability falls back to heuristics and the Stripe route returns a safe fallback URL.
 
@@ -44,6 +47,7 @@ If unset, viability falls back to heuristics and the Stripe route returns a safe
 - POST `/api/projects/{id}/complete` — mark complete (Make.com stub)
 - POST `/api/viability-check` — returns viability label/score/reason for a transcript
 - POST `/api/stripe/create-checkout-session` — returns a Checkout `url` for a plan (`free|pro|studio`)
+- POST `/api/stripe/webhook` — webhook endpoint (skeleton; safe no-op until configured)
 
 ## Notes
 
@@ -63,4 +67,3 @@ See `render.yaml` for a ready-to-deploy service.
    - `ALLOWED_ORIGINS=https://<your-frontend>`
    - Optional: `OPENAI_API_KEY`, Stripe vars
 3) Start command: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
-
