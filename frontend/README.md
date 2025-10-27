@@ -18,3 +18,9 @@ Set `NEXT_PUBLIC_BACKEND_URL` (defaults to `http://localhost:8000`).
 - `/project/[id]` — Project detail with artifacts
 - `/pricing` — Static pricing page
 
+## Pricing & Stripe
+
+- `components/PricingTable.tsx` renders a 3-tier pricing table.
+- `lib/checkout.ts` posts to backend `/api/stripe/create-checkout-session` and redirects to the returned URL.
+- No `@stripe/stripe-js` is required for this redirect-only flow.
+- Configure backend `FRONTEND_URL` and Stripe vars to enable Checkout.
