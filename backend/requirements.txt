@@ -11,6 +11,7 @@ youtube-transcript-api
 yt-dlp
 openai>=1.42.0
 stripe
+boto3
 
 # tests
 pytest
