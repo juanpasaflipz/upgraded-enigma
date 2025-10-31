@@ -27,6 +27,7 @@ backend/artifacts/
 # IDE
 .vscode/
 .idea/
+.history/
 *.swp
 *.swo
 
