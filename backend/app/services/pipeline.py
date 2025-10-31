@@ -79,6 +79,11 @@ def captions_or_transcribe(youtube_url: str, work_dir: Optional[Path] = None) ->
 def fetch_youtube_captions(video_id: str, log=lambda *_: None) -> Optional[str]:
     """Fetch captions preferring English, manually-created first, then generated, else any."""
     try:
+        # Check if the method exists (for version compatibility)
+        if not hasattr(YouTubeTranscriptApi, 'list_transcripts'):
+            log(f"Caption API error: youtube-transcript-api version too old (need >= 2021.6.6)")
+            return None
+        
         transcripts = YouTubeTranscriptApi.list_transcripts(video_id)
         avail = []
         try:
@@ -91,6 +96,9 @@ def fetch_youtube_captions(video_id: str, log=lambda *_: None) -> Optional[str]:
             log(f"Available transcript languages: {','.join(avail)}")
     except (TranscriptsDisabled, NoTranscriptFound) as e:
         log(f"Caption list error: {type(e).__name__}")
+        return None
+    except AttributeError as e:
+        log(f"Caption API error: {e}. Make sure youtube-transcript-api>=2021.6.6 is installed.")
         return None
     except Exception as e:
         log(f"Caption list error: {e}")

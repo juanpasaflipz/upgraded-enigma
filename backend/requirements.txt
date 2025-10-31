@@ -7,7 +7,7 @@ aiofiles
 python-dotenv
 
 # youtube + ai
-youtube-transcript-api
+youtube-transcript-api>=2021.6.6
 yt-dlp
 openai>=1.42.0
 stripe
